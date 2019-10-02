@@ -1,0 +1,7 @@
+.vs
+packages
+bin
+obj
+*.user
+FlsTrueFalseQuiz/App_Data/*.log
+FlsTrueFalseQuiz/App_Data/log/
