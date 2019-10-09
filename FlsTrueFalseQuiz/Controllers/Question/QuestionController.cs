@@ -29,7 +29,8 @@ namespace FlsTrueFalseQuiz.Controllers.Question
 
         private static Business.Models.Question HideValidAnswer(Business.Models.Question question)
         {
-            question.Answers.ForEach(a => a.IsValid = false);
+            question.Answer = false;
+            question.Explanation = string.Empty;
             return question;
         }
     }

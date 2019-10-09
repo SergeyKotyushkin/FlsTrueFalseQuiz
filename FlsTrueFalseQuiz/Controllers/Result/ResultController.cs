@@ -20,19 +20,19 @@ namespace FlsTrueFalseQuiz.Controllers.Result
         private static JsonSerializerSettings JsonSerializerSettings =>
             new JsonSerializerSettings {ContractResolver = new CamelCasePropertyNamesContractResolver()};
 
-        private readonly IAnswerRepository _answerRepository;
         private readonly IResultRepository _resultRepository;
+        private readonly IQuestionRepository _questionRepository;
         private readonly IMailService _mailService;
         private readonly IMailGenerator _mailGenerator;
 
         public ResultController(
-            IAnswerRepository answerRepository, 
             IResultRepository resultRepository,
+            IQuestionRepository questionRepository,
             IMailService mailService,
             IMailGenerator mailGenerator)
         {
-            _answerRepository = answerRepository;
             _resultRepository = resultRepository;
+            _questionRepository = questionRepository;
             _mailService = mailService;
             _mailGenerator = mailGenerator;
         }
@@ -53,30 +53,46 @@ namespace FlsTrueFalseQuiz.Controllers.Result
                 return errorJson;
             }
 
-            var answers = _answerRepository.GetByIds(userAnswers.Select(i => i.AnswerId).Distinct());
-            if (answers == null)
+            var questions = _questionRepository.GetQuestions(userAnswers.Select(x => x.QuestionId));
+            if (questions == null)
             {
                 return JsonConvert.SerializeObject(new {HasErrors = true, MailSent = false},
                     JsonSerializerSettings);
             }
 
-            var answersArray = answers.ToArray();
-            var correctAnswers = answersArray.Where(a => a.IsValid).ToArray();
+            var answers = questions
+                .Join(
+                    userAnswers,
+                    q => q.Id,
+                    a => a.QuestionId,
+                    (q, a) => new
+                    {
+                        q.Id,
+                        q.Text,
+                        q.Answer,
+                        q.Explanation,
+                        UserAnswer = a.Answer,
+                        IsCorrect = q.Answer == a.Answer
+                    })
+                .ToArray();
+
+            var answersToSave = answers.Select(x => new { QuestionId = x.Id, x.Answer, x.UserAnswer, x.IsCorrect });
+            var correctAnswers = answers.Where(a => a.IsCorrect).ToArray();
             var countOfCorrectAnswers = correctAnswers.Length;
             var totalNumberOfQuestions = Config.Settings.CountOfQuestions;
             var quizPassedThreshold = Config.Settings.QuizSuccessfulThreshold;
             var passed = countOfCorrectAnswers >= quizPassedThreshold;
             var passGrade = passed ? PassGrade.Passed : (countOfCorrectAnswers > 0 ? PassGrade.Failed : PassGrade.Zero);
 
-            if (!TrySendMail(email, name, passGrade, countOfCorrectAnswers, totalNumberOfQuestions, out errorJson))
+            if (!TrySendMail(email, name, passGrade, questions, countOfCorrectAnswers, totalNumberOfQuestions, out errorJson))
             {
                 string trySaveResult;
-                TrySaveResult(email, name, stack, phone, comment, false, answersArray, countOfCorrectAnswers, out trySaveResult);
+                TrySaveResult(email, name, stack, phone, comment, false, answersToSave, countOfCorrectAnswers, out trySaveResult);
 
                 return errorJson;
             }
 
-            if (!TrySaveResult(email, name, stack, phone, comment, true, answersArray, countOfCorrectAnswers, out errorJson))
+            if (!TrySaveResult(email, name, stack, phone, comment, true, answersToSave, countOfCorrectAnswers, out errorJson))
             {
                 return errorJson;
             }
@@ -106,7 +122,7 @@ namespace FlsTrueFalseQuiz.Controllers.Result
             return true;
         }
 
-        private bool TrySendMail(string email, string name, PassGrade passGrade, int countOfCorrectAnswers, int totalQuestions, out string errorJson)
+        private bool TrySendMail(string email, string name, PassGrade passGrade, IEnumerable<Business.Models.Question> questions, int countOfCorrectAnswers, int totalQuestions, out string errorJson)
         {
             errorJson = string.Empty;
 
@@ -121,7 +137,7 @@ namespace FlsTrueFalseQuiz.Controllers.Result
             var errorWhenSendingEmail = false;
             try
             {
-                using (var message = _mailGenerator.Generate(values, passGrade, email, countOfCorrectAnswers))
+                using (var message = _mailGenerator.Generate(questions, values, passGrade, email, countOfCorrectAnswers))
                 {
                     isEmailSent = _mailService.Send(message);
                     errorWhenSendingEmail = !isEmailSent;

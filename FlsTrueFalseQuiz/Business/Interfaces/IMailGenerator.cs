@@ -7,6 +7,6 @@ namespace FlsTrueFalseQuiz.Business.Interfaces
 {
     public interface IMailGenerator
     {
-        MailMessage Generate(IList<Tuple<string, string>> values, PassGrade grade, string toEmail, int quantity);
+        MailMessage Generate(IEnumerable<Models.Question> questions, IList<Tuple<string, string>> values, PassGrade grade, string toEmail, int quantity);
     }
 }

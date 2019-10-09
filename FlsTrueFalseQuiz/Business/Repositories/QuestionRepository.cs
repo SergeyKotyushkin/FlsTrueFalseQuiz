@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using FlsTrueFalseQuiz.Business.Interfaces;
 using FlsTrueFalseQuiz.Business.Models;
 
@@ -11,6 +10,7 @@ namespace FlsTrueFalseQuiz.Business.Repositories
     public class QuestionRepository : IQuestionRepository
     {
         private const string SpGetRandomQuestion = "sp_GetRandomQuestion";
+        private const string SpGetQuestions = "sp_GetQuestions";
 
         private readonly IDataBaseService _dataBaseService;
 
@@ -25,17 +25,34 @@ namespace FlsTrueFalseQuiz.Business.Repositories
 
             var sqlParameters = new[] {new SqlParameter("@ExcludedIdsTable", exludedIdsTable)};
 
-            var questionAnswerDtos = new List<QuestionAnswerDto>(1);
+            var questions = new List<Question>(1);
             if (!_dataBaseService.TryMapReadLines(
                 SpGetRandomQuestion,
                 sqlParameters,
-                QuestionsReaderAction(questionAnswerDtos)))
+                RandomQuestionsReaderAction(questions)))
             {
                 return null;
             }
 
-            var questions = BuildQuestions(questionAnswerDtos);
             return questions.Count == 1 ? questions[0] : null;
+        }
+
+        public Question[] GetQuestions(IEnumerable<int> ids)
+        {
+            var idsTable = GetIdsTable(ids);
+
+            var sqlParameters = new[] {new SqlParameter("@IdsTable", idsTable)};
+
+            var questions = new List<Question>(1);
+            if (!_dataBaseService.TryMapReadLines(
+                SpGetQuestions,
+                sqlParameters,
+                FullQuestionsReaderAction(questions)))
+            {
+                return null;
+            }
+
+            return questions.ToArray();
         }
 
         private static DataTable GetIdsTable(IEnumerable<int> excludedQuestionsIds)
@@ -53,42 +70,30 @@ namespace FlsTrueFalseQuiz.Business.Repositories
             return exludedIdsTable;
         }
 
-        private static Action<SqlDataReader> QuestionsReaderAction(ICollection<QuestionAnswerDto> questions)
+        private static Action<SqlDataReader> RandomQuestionsReaderAction(ICollection<Question> questions)
         {
             return reader =>
             {
-                questions.Add(new QuestionAnswerDto
+                questions.Add(new Question
                 {
-                    QuestionId = reader.GetInt32(0),
-                    QuestionTitle = reader.GetString(1),
-                    QuestionImage = reader.GetString(2),
-                    AnswerId = reader.GetInt32(3),
-                    AnswerText = reader.GetString(4),
-                    AnswerIsValid = reader.GetBoolean(5)
+                    Id = reader.GetInt32(0),
+                    Text = reader.GetString(1)
                 });
             };
         }
 
-        private static List<Question> BuildQuestions(IEnumerable<QuestionAnswerDto> questionAnswerDtos)
+        private static Action<SqlDataReader> FullQuestionsReaderAction(ICollection<Question> questions)
         {
-            var questions = questionAnswerDtos
-                .GroupBy(q => new {q.QuestionId, q.QuestionTitle, q.QuestionImage})
-                .Select(g => new Question
+            return reader =>
+            {
+                questions.Add(new Question
                 {
-                    Id = g.Key.QuestionId,
-                    Text = g.Key.QuestionTitle,
-                    ImageUrl = g.Key.QuestionImage,
-                    Answers = g.Select(a => new Answer
-                    {
-                        AnswerId = a.AnswerId,
-                        QuestionId = g.Key.QuestionId,
-                        Text = a.AnswerText,
-                        IsValid = a.AnswerIsValid
-                    }).ToList()
-                })
-                .ToList();
-
-            return questions;
+                    Id = reader.GetInt32(0),
+                    Text = reader.GetString(1),
+                    Answer = reader.GetBoolean(2),
+                    Explanation = reader.GetString(3)
+                });
+            };
         }
     }
 }

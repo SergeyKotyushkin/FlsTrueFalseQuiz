@@ -67,10 +67,10 @@
             self.isFinishActive(true);
         }
 
-        function _addUserAnswer(questionId, answerId) {
+        function _addUserAnswer(questionId, answer) {
             var self = this;
 
-            self.userAnswers.push({ questionId: questionId, answerId: answerId });
+            self.userAnswers.push({ questionId: questionId, answer: answer });
         }
 
         function _showModalErrorMessage(message, closeCallback) {

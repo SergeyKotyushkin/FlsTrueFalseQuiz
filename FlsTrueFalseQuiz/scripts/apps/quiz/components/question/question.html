@@ -6,13 +6,19 @@
     <!-- /ko -->
 
     <div class="polls-form-content indent-all">
-        <div class="polls-img-container"><img class="polls-img" alt="img" data-bind="attr: {src: 'content/images/' + imageUrl, alt: currentQuestionNumber() }"></div>
         <div class="polls-counter"><span class="current" data-bind="text: currentQuestionNumber"></span> из <span data-bind="text: countOfQuestions"></span></div>
-        <ul class="polls-ul" data-bind="foreach: {data: answers, as: 'answer'}">
-            <li class="polls-li"><input type="radio" data-bind="value: answer.answerId, checked: $parent.selectedAnswerId, attr: {id: 'poll_' + answer.answerId}" /><label data-bind="attr: {for: 'poll_' + answer.answerId}, text: answer.text"></label></li>
+        <ul class="polls-ul">
+            <li class="polls-li">
+                <input type="radio" id="poll_1" value="1" data-bind="checked: selectedAnswer"/>
+                <label for="poll_1">Правда</label>
+            </li>
+            <li class="polls-li">
+                <input type="radio" id="poll_0" value="0" data-bind="checked: selectedAnswer"/>
+                <label for="poll_0">Неправда</label>
+            </li>
         </ul>
         <div class="polls-buttons">
-            <input readonly class="form-button" onfocus="this.blur()" value="Продолжить" data-bind="enable: selectedAnswerId, click: answerButtonClick" />
+            <input readonly class="form-button" onfocus="this.blur()" value="Продолжить" data-bind="enable: +selectedAnswer() !== -1, click: answerButtonClick" />
         </div>
     </div>
 </div>

@@ -111,6 +111,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\QuestionExplanationRowTemplate.html" />
     <Content Include="App_Data\ZeroLevelEmailSubjectTemplate.txt" />
     <Content Include="App_Data\FailedEmailSubjectTemplate.txt" />
     <Content Include="App_Data\ZeroLevelEmailTemplate.html" />
@@ -128,10 +129,10 @@
     <Content Include="scripts\apps\quiz\components\intro\intro.js" />
     <Content Include="scripts\apps\quiz\components\finish\finish.html" />
     <Content Include="scripts\apps\quiz\components\finish\finish.js" />
-    <Content Include="scripts\apps\quiz\components\test\test.html" />
-    <Content Include="scripts\apps\quiz\components\test\test.js" />
     <Content Include="scripts\apps\quiz\components\submit\submit.html" />
     <Content Include="scripts\apps\quiz\components\submit\submit.js" />
+    <Content Include="scripts\apps\quiz\components\test\test.html" />
+    <Content Include="scripts\apps\quiz\components\test\test.js" />
     <Content Include="scripts\apps\quiz\components\question\question.html" />
     <Content Include="scripts\apps\quiz\components\question\question.js" />
     <Content Include="scripts\apps\quiz\quiz.vm.js" />
@@ -155,15 +156,12 @@
     <Compile Include="Business\Constants\Config.cs" />
     <Compile Include="Business\Constants\PassGrade.cs" />
     <Compile Include="Business\Interfaces\IDataBaseService.cs" />
-    <Compile Include="Business\Interfaces\IAnswerRepository.cs" />
     <Compile Include="Business\Interfaces\IMailService.cs" />
     <Compile Include="Business\Interfaces\IQuestionRepository.cs" />
     <Compile Include="Business\Interfaces\IResultRepository.cs" />
     <Compile Include="Business\Models\Answer.cs" />
-    <Compile Include="Business\Models\QuestionAnswerDto.cs" />
     <Compile Include="Business\Models\UserAnswer.cs" />
     <Compile Include="Business\Models\Question.cs" />
-    <Compile Include="Business\Repositories\AnswerRepository.cs" />
     <Compile Include="Business\Repositories\QuestionRepository.cs" />
     <Compile Include="Business\Repositories\ResultRepository.cs" />
     <Compile Include="Business\Services\DataBaseService.cs" />
