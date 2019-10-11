@@ -22,7 +22,7 @@
             'apps/quiz/quiz.app',
             'apps/quiz/setup/component-factory',
             'apps/quiz/setup/component-registrator',
-//todo            //'components'
+            'components'
         ],
         function _(quizApp, componentFactory, componentRegistrator) {
 
