@@ -75,6 +75,18 @@ div {
     position: relative;
 }
 
+.intro-background {
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    z-index: -1;
+    background: url("/content/images/background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
     .container:before {
         content: "";
         display: block;
@@ -90,6 +102,17 @@ div {
     height: 7.7rem;
     width: 100%;
     padding: 1rem;
+}
+
+.intro-header-background {
+    height: 7.7rem;
+    width: 100%;
+    padding: 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0.7);
+    z-index: -1;
 }
 
 .logo-img {
@@ -200,6 +223,17 @@ div {
 
 .form-button:focus {
     border-bottom: 2px solid #A64D00;
+}
+
+.button-transparent {
+    background: transparent !important;
+    border: 1px solid #d5dfee !important;
+    color: #d5dfee !important;
+}
+
+.button-transparent:hover {
+    border: 1px solid #ffffff !important;
+    color: #ffffff !important;
 }
 
 /* sign up */
@@ -370,6 +404,25 @@ input[type="number"] {
     .content-v-centered p {
         line-height: 2rem;
     }
+
+.content-transparent {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.content-transparent h2,
+.content-transparent p {
+    color: #ffffff !important;
+    text-shadow: #000000 1px 1px 1px;
+}
+
+.content-transparent h2 {
+    font-size: 2.25rem;
+}
+
+.content-transparent p {
+    font-size: 1.8rem;
+}
 
 .indent-b::after {
     content: "";
