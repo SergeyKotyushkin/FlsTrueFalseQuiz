@@ -132,7 +132,7 @@ div {
 
 .intro-content {
     position: fixed;
-    top: 25rem;
+    top: 30rem;
     left: 0;
     width: 100%;
 }
@@ -527,8 +527,8 @@ input[type="number"] {
 
 .felix {
     display: block;
-    width: 15rem;
-    height: 15rem;
+    width: 20rem;
+    height: 20rem;
     margin: 0 auto;
     background: url(/content/images/felix.svg) no-repeat;
     background-size: contain;
