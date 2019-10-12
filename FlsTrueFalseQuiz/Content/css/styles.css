@@ -113,6 +113,48 @@ div {
     left: 0;
     background: rgba(255, 255, 255, 0.7);
     z-index: -1;
+    border-bottom: 1px solid #004f8b;
+}
+
+.intro-text-background {
+    text-align: center;
+    font-size: 100% !important;
+    width: 100%;
+    margin: 20px 0;
+    position: fixed;
+    top: 7.7rem;
+    left: 0;
+}
+
+.intro-text-background svg {
+    fill: rgba(255, 255, 255, 0.4);
+}
+
+.intro-content {
+    position: fixed;
+    top: 25rem;
+    left: 0;
+    width: 100%;
+}
+
+.intro-content h2,
+.intro-content p {
+    color: #ffffff !important;
+    text-shadow: #000000 1px 1px 1px;
+}
+
+.intro-content h2 {
+    font-size: 2.25rem;
+    padding-bottom: 0;
+    padding-top: 2rem;
+}
+
+.intro-content p {
+    font-size: 1.8rem;
+    padding-bottom: 1rem;
+    padding-top: 2rem;
+    margin-bottom: 0;
+    margin-top: 0;
 }
 
 .logo-img {
@@ -410,20 +452,6 @@ input[type="number"] {
     box-shadow: none !important;
 }
 
-.content-transparent h2,
-.content-transparent p {
-    color: #ffffff !important;
-    text-shadow: #000000 1px 1px 1px;
-}
-
-.content-transparent h2 {
-    font-size: 2.25rem;
-}
-
-.content-transparent p {
-    font-size: 1.8rem;
-}
-
 .indent-b::after {
     content: "";
     height: 2rem;
@@ -499,12 +527,11 @@ input[type="number"] {
 
 .felix {
     display: block;
-    width: 20rem;
-    height: 20rem;
+    width: 15rem;
+    height: 15rem;
     margin: 0 auto;
     background: url(/content/images/felix.svg) no-repeat;
     background-size: contain;
-    padding-left: 22rem;
 }
 
 p.content-felix {
@@ -528,6 +555,7 @@ p.content-felix {
 /* desktop-only */
 @media only screen and (min-width: 992px) {
     html { font-size: 62.5%; }
+    html .intro-text-background { font-size: 0.9rem !important;}
 
     h2 {
         font-size: 1.8rem;
