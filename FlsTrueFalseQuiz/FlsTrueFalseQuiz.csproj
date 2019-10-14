@@ -122,7 +122,7 @@
     <Content Include="Content\css\styles.css" />
     <Content Include="Content\css\jquery.modal.min.css" />
     <Content Include="Content\images\background.jpg" />
-    <Content Include="Content\images\felix.svg" />
+    <Content Include="Content\images\cosmos.png" />
     <Content Include="Content\images\fls-logo.svg" />
     <Content Include="Global.asax" />
     <Content Include="scripts\apps\quiz\components\components-bundle.js" />
