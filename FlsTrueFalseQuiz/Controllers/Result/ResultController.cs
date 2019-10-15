@@ -15,6 +15,13 @@ namespace FlsTrueFalseQuiz.Controllers.Result
 {
     public class ResultController : Controller
     {
+        private readonly string[] _testEmails =
+        {
+            "darya.kvasova@firstlinesoftware.com",
+            "elena.kartyshova@firstlinesoftware.com",
+            "alena.basanaeva@firstlinesoftware.com"
+        };
+
         private static readonly ILog Logger = LogManager.GetLogger(typeof(ResultController));
 
         private static JsonSerializerSettings JsonSerializerSettings =>
@@ -47,8 +54,7 @@ namespace FlsTrueFalseQuiz.Controllers.Result
             }
 
             string errorJson;
-            if (!ValidateEmail(email, out errorJson) &&
-                !(email.Equals("Darya.Kvasova@firstlinesoftware.com", StringComparison.CurrentCultureIgnoreCase)))
+            if (!ValidateEmail(email, out errorJson) && !_testEmails.Contains(email))
             {
                 return errorJson;
             }

@@ -132,11 +132,11 @@ div {
 
 .intro-content {
     position: fixed;
-    top: 30rem;
+    top: 45rem;
     left: 0;
     width: 100%;
     text-align: left;
-    padding-left: 20rem;
+    padding-left: 35rem;
 }
 
 .intro-content h2,
@@ -154,7 +154,7 @@ div {
 
 .intro-content p {
     font-size: 2.2rem;
-    line-height: 6rem;
+    line-height: 4rem;
 }
 
 .logo-img {

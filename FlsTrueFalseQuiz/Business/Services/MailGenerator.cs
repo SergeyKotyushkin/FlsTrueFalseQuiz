@@ -83,7 +83,7 @@ namespace FlsTrueFalseQuiz.Business.Services
                 var injectValues = new List<Tuple<string, string>>
                 {
                     new Tuple<string, string>("%%text%%", question.Text),
-                    new Tuple<string, string>("%%answer%%", question.Answer ? "Правда" : "Неправда"),
+                    new Tuple<string, string>("%%answer%%", question.Answer ? "Правда" : "Вымысел"),
                     new Tuple<string, string>("%%explanation%%", question.Explanation),
                 };
                 questionExplanationRowStringBuilder.AppendLine(
