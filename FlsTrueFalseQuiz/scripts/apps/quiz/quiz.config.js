@@ -3,6 +3,7 @@
 
     require.config({
         baseUrl: '/scripts',
+        urlArgs: 'q=23',
         paths: {
             'knockout': 'vendor/knockout-3.4.2',
             'jquery': 'vendor/jquery-3.3.1.min',
