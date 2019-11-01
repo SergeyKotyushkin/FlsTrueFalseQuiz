@@ -12,6 +12,15 @@ namespace FlsTrueFalseQuiz.Business.Constants
             public static int QuizSuccessfulThreshold => Convert.ToByte(ConfigurationManager.AppSettings["QuizSuccessfulThreshold"] ?? "4");
 
             public static string ReplyTo => ConfigurationManager.AppSettings["ReplyTo"] ?? "";
+
+            public static string[] TestEmails
+            {
+                get
+                {
+                    var testEmailsSetting = ConfigurationManager.AppSettings["TestEmails"] ?? "";
+                    return testEmailsSetting.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                }
+            }
         }
     }
 }

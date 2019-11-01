@@ -15,12 +15,7 @@ namespace FlsTrueFalseQuiz.Controllers.Result
 {
     public class ResultController : Controller
     {
-        private readonly string[] _testEmails =
-        {
-            "darya.kvasova@firstlinesoftware.com",
-            "elena.kartyshova@firstlinesoftware.com",
-            "alena.basanaeva@firstlinesoftware.com"
-        };
+        private readonly string[] _testEmails;
 
         private static readonly ILog Logger = LogManager.GetLogger(typeof(ResultController));
 
@@ -42,6 +37,8 @@ namespace FlsTrueFalseQuiz.Controllers.Result
             _questionRepository = questionRepository;
             _mailService = mailService;
             _mailGenerator = mailGenerator;
+
+            _testEmails = Config.Settings.TestEmails;
         }
 
         [HttpPost]
