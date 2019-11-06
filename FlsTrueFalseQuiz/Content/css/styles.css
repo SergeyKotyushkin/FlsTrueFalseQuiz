@@ -534,12 +534,6 @@ input[type="number"] {
     background-size: contain;
 }
 
-.vertical-center {
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
 /* 
 =============================================================================
  Breakpoints
@@ -550,6 +544,9 @@ input[type="number"] {
     .intro-content {
         padding-left: 0;
         text-align: center !important;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
     }
 
     .intro-content h2 {
