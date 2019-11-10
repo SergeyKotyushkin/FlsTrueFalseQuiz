@@ -125,7 +125,7 @@ namespace FlsTrueFalseQuiz.Controllers.Result
             return true;
         }
 
-        private bool TrySendMail(string email, string name, PassGrade passGrade, IEnumerable<Business.Models.Question> questions, int countOfCorrectAnswers, int totalQuestions, out string errorJson)
+        private bool TrySendMail(string email, string name, PassGrade passGrade, Business.Models.Question[] questions, int countOfCorrectAnswers, int totalQuestions, out string errorJson)
         {
             errorJson = string.Empty;
 

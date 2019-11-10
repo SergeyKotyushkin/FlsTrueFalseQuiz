@@ -111,7 +111,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\QuestionExplanationRowTemplate.html" />
+    <Content Include="App_Data\QuestionRowTextImageTemplate.html" />
+    <Content Include="App_Data\QuestionRowTextTextTemplate.html" />
     <Content Include="App_Data\ZeroLevelEmailSubjectTemplate.txt" />
     <Content Include="App_Data\FailedEmailSubjectTemplate.txt" />
     <Content Include="App_Data\ZeroLevelEmailTemplate.html" />

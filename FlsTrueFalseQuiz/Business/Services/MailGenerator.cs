@@ -13,7 +13,7 @@ namespace FlsTrueFalseQuiz.Business.Services
 {
     public class MailGenerator : IMailGenerator
     {
-        public MailMessage Generate(IEnumerable<Question> questions, IList<Tuple<string, string>> values, PassGrade grade, string toEmail, int quantity)
+        public MailMessage Generate(Question[] questions, IList<Tuple<string, string>> values, PassGrade grade, string toEmail, int quantity)
         {
             var variationIndex = SelectWordVariationIndex(quantity);
             var otvet = MailGenerator.Otvet[variationIndex];
@@ -67,30 +67,45 @@ namespace FlsTrueFalseQuiz.Business.Services
             return File.ReadAllText(HostingEnvironment.MapPath(templateFileName));
         }
 
-        private static string LoadQuestionExplanationRowTemplate()
-        {
-            var templateFileName =  "/App_Data/QuestionExplanationRowTemplate.html";
-
-            return File.ReadAllText(HostingEnvironment.MapPath(templateFileName));
-        }
-
-        private static string GetQuestionExplanationRows(IEnumerable<Question> questions)
+        private static string GetQuestionExplanationRows(Question[] questions)
         {
             var questionExplanationRowStringBuilder = new StringBuilder();
-            var questionExplanationRowTemplate = LoadQuestionExplanationRowTemplate();
-            foreach (var question in questions)
+            var questionRowTextTextTemplate = LoadQuestionRowTextTextTemplate();
+            var questionRowTextImageTemplate = LoadQuestionRowTextImageTemplate();
+            for (var i = 0; i < questions.Length; i++)
             {
+                var question = questions[i];
+
                 var injectValues = new List<Tuple<string, string>>
                 {
                     new Tuple<string, string>("%%text%%", question.Text),
                     new Tuple<string, string>("%%answer%%", question.Answer ? "Правда" : "Вымысел"),
                     new Tuple<string, string>("%%explanation%%", question.Explanation),
+                    new Tuple<string, string>("%%row_background_color%%", i % 2 == 0 ? "#FFFFFF" : "#F2F2F2"),
                 };
-                questionExplanationRowStringBuilder.AppendLine(
-                    InjectValues(questionExplanationRowTemplate, injectValues));
+
+                var template = question.Explanation.StartsWith(@"https://")
+                    ? questionRowTextImageTemplate
+                    : questionRowTextTextTemplate;
+
+                questionExplanationRowStringBuilder.AppendLine(InjectValues(template, injectValues));
             }
 
             return questionExplanationRowStringBuilder.ToString();
+        }
+
+        private static string LoadQuestionRowTextTextTemplate()
+        {
+            var templateFileName =  "/App_Data/QuestionRowTextTextTemplate.html";
+
+            return File.ReadAllText(HostingEnvironment.MapPath(templateFileName));
+        }
+
+        private static string LoadQuestionRowTextImageTemplate()
+        {
+            var templateFileName =  "/App_Data/QuestionRowTextImageTemplate.html";
+
+            return File.ReadAllText(HostingEnvironment.MapPath(templateFileName));
         }
 
         private static string InjectValues(string template, IEnumerable<Tuple<string, string>> values)
