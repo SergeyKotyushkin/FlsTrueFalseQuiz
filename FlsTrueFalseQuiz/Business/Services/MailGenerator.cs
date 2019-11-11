@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web.Hosting;
 using FlsTrueFalseQuiz.Business.Constants;
 using FlsTrueFalseQuiz.Business.Interfaces;
@@ -81,10 +82,12 @@ namespace FlsTrueFalseQuiz.Business.Services
                     new Tuple<string, string>("%%text%%", question.Text),
                     new Tuple<string, string>("%%answer%%", question.Answer ? "Правда" : "Вымысел"),
                     new Tuple<string, string>("%%explanation%%", question.Explanation),
-                    new Tuple<string, string>("%%row_background_color%%", i % 2 == 0 ? "#FFFFFF" : "#F2F2F2"),
+                    new Tuple<string, string>("%%column_1_background_color%%", i % 2 == 0 ? "#FFFFFF" : "#F2F2F2"),
+                    new Tuple<string, string>("%%column_2_background_color%%", i % 2 == 0 ? "#F2F2F2" : "#FFFFFF")
                 };
 
-                var template = question.Explanation.StartsWith(@"https://")
+                var imageRegex = new Regex(@"^http.*(\.jpg|\.png)$", RegexOptions.IgnoreCase);
+                var template = imageRegex.IsMatch(question.Explanation)
                     ? questionRowTextImageTemplate
                     : questionRowTextTextTemplate;
 
